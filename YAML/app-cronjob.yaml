@@ -1,0 +1,17 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: create-cronjob
+spec:
+  schedule: "0 0 * * 0"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mysql-container
+            image: mysql
+            args:
+            - "sh"
+            - "-c"
+            - "mysqldump -u root -p --database data"

@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: app-job-sync
+spec:
+  template:
+    spec:
+      containers:
+      - name: app-container
+        image: google/cloud-sdk:latest
+        args: ["gsutil", "-m", "rsync", "gs://<bucket-name>", "/mnt/data"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /mnt/data
+      volumes:
+      - name: data-volume
+        gcePersistentDisk:
+          pdName: <disk-name>
+          fsType: ext4
